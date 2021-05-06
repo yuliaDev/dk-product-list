@@ -1,18 +1,18 @@
 import React from 'react';
 
-import Autocomplete from '../components/autocomplete/autocomplete';
+import ProductList from '@/components/product-list/product-list';
 
 export const Home = () => {
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-sm">
+				<div className="col">
 					<h1>Product List</h1>
 				</div>
 			</div>
 			<div className="row">
-				<div className="col-sm">
-					<Autocomplete suggestions={['app', 'store']} />
+				<div className="col-12">
+					<ProductList />
 				</div>
 			</div>
 		</div>

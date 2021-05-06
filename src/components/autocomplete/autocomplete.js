@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './autocomplete.scss';
 
 const Autocomplete = ({ suggestions = [] }) => {
 	const [params, setParams] = useState({
@@ -64,6 +65,10 @@ const Autocomplete = ({ suggestions = [] }) => {
 		}
 	};
 
+	const handleFocus = () => {
+		console.log('focus');
+	};
+
 	// let suggestionsListComponent = 'h1';
 
 	useEffect(() => {
@@ -77,14 +82,27 @@ const Autocomplete = ({ suggestions = [] }) => {
 	});
 
 	return (
-		<>
-			<input type="text" onChange={onChange} onKeyDown={onKeyDown} value={params.userInput} className="form-control" />
-			<div className="border rounded">
-				{params.filteredSuggestions.map((suggestion) => {
-					return <div key={suggestion.index}>{suggestion}</div>;
-				})}
-			</div>
-		</>
+		<div className="autocomplete">
+			<input
+				type="text"
+				placeholder="list item"
+				className="no-border"
+				onFocus={handleFocus}
+				onChange={onChange}
+				value={params.userInput}
+			/>
+			{params.filteredSuggestions.length ? (
+				<div className="border rounded autocomplete-options">
+					{params.filteredSuggestions.map((suggestion) => {
+						return (
+							<div className="m-1" key={suggestion.index}>
+								{suggestion}
+							</div>
+						);
+					})}
+				</div>
+			) : null}
+		</div>
 	);
 };
 
