@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './autocomplete.scss';
 
-const Autocomplete = ({ suggestions = [] }) => {
+const Autocomplete = ({ suggestions = [], addNewItem }) => {
 	const [params, setParams] = useState({
 		activeSuggestion: 0,
 		filteredSuggestions: [],
@@ -10,13 +10,12 @@ const Autocomplete = ({ suggestions = [] }) => {
 	});
 
 	const onChange = (e) => {
-		const userInput = e.target.value;
-		console.log('suggestions', suggestions);
+		const userInput = e.currentTarget.value;
 
 		// Filter our suggestions that don't contain the user's input
-		const filteredSuggestions = suggestions.filter(
-			(suggestion) => suggestion.toLowerCase().indexOf(userInput.toLowerCase()) !== -1,
-		);
+		const filteredSuggestions = userInput.length
+			? suggestions.filter((suggestion) => suggestion.title.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
+			: [];
 
 		setParams({
 			activeSuggestion: 0,
@@ -26,25 +25,31 @@ const Autocomplete = ({ suggestions = [] }) => {
 		});
 	};
 
-	const onClick = (e) => {
+	const onClick = (item) => {
+		addNewItem(item);
 		setParams({
 			activeSuggestion: 0,
 			filteredSuggestions: [],
 			showSuggestions: false,
-			userInput: e.currentTarget.innerText,
+			userInput: '',
 		});
 	};
 
 	const onKeyDown = (e) => {
-		const { activeSuggestion, filteredSuggestions } = params;
+		const { userInput, activeSuggestion, filteredSuggestions } = params;
 
 		// User pressed the enter key
 		if (e.keyCode === 13) {
+			if (filteredSuggestions && filteredSuggestions.length) {
+				addNewItem(filteredSuggestions[activeSuggestion]);
+			} else {
+				addNewItem({ title: userInput });
+			}
 			setParams({
-				...params,
 				activeSuggestion: 0,
+				filteredSuggestions: [],
 				showSuggestions: false,
-				userInput: filteredSuggestions[activeSuggestion],
+				userInput: '',
 			});
 		}
 		// User pressed the up arrow
@@ -66,7 +71,7 @@ const Autocomplete = ({ suggestions = [] }) => {
 	};
 
 	const handleFocus = () => {
-		console.log('focus');
+		console.log('focus', params.activeSuggestion);
 	};
 
 	// let suggestionsListComponent = 'h1';
@@ -89,14 +94,19 @@ const Autocomplete = ({ suggestions = [] }) => {
 				className="no-border"
 				onFocus={handleFocus}
 				onChange={onChange}
+				onKeyDown={onKeyDown}
 				value={params.userInput}
 			/>
 			{params.filteredSuggestions.length ? (
 				<div className="border rounded autocomplete-options">
-					{params.filteredSuggestions.map((suggestion) => {
+					{params.filteredSuggestions.map((suggestion, index) => {
 						return (
-							<div className="m-1" key={suggestion.index}>
-								{suggestion}
+							<div
+								className={`m-1 suggestion ${index === params.activeSuggestion ? 'suggestion-active' : ''}`}
+								key={suggestion.index}
+								onClick={() => onClick(suggestion)}
+							>
+								{suggestion.title}
 							</div>
 						);
 					})}
