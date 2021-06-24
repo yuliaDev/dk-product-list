@@ -1,0 +1,8 @@
+.product-list .add-item-plus-icon {
+  margin: 2px;
+}
+
+.product-list .no-border {
+  border: 0 none;
+  outline: none;
+}

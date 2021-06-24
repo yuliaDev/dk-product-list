@@ -1,0 +1,20 @@
+.autocomplete .border.rounded.autocomplete-options {
+  max-height: 143px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  background: #fff;
+  min-width: 200px;
+  -webkit-box-shadow: 1px 1px 14px 3px rgba(201, 201, 201, 0.67);
+  box-shadow: 1px 1px 14px 3px rgba(201, 201, 201, 0.67);
+}
+.autocomplete .suggestion-active {
+  background-color: #f5f5f5;
+  cursor: pointer;
+  font-weight: 500;
+}
+.autocomplete .suggestion:hover {
+  background-color: #ededed;
+  cursor: pointer;
+  font-weight: 500;
+}
