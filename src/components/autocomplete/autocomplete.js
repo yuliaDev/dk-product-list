@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './autocomplete.scss';
+import './autocomplete.css';
 
-const Autocomplete = ({ suggestions = [], addNewItem }) => {
+const Autocomplete = ({ suggestions = [], addNewItem, placeholder }) => {
 	const [params, setParams] = useState({
 		activeSuggestion: 0,
 		filteredSuggestions: [],
@@ -70,29 +70,12 @@ const Autocomplete = ({ suggestions = [], addNewItem }) => {
 		}
 	};
 
-	const handleFocus = () => {
-		console.log('focus', params.activeSuggestion);
-	};
-
-	// let suggestionsListComponent = 'h1';
-
-	useEffect(() => {
-		console.log('ok');
-		if (params.showSuggestions && params.userInput) {
-			console.log('ok1');
-			if (params.filteredSuggestions.length) {
-				console.log('ok2');
-			}
-		}
-	});
-
 	return (
 		<div className="autocomplete">
 			<input
 				type="text"
-				placeholder="list item"
+				placeholder={placeholder}
 				className="no-border"
-				onFocus={handleFocus}
 				onChange={onChange}
 				onKeyDown={onKeyDown}
 				value={params.userInput}

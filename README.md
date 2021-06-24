@@ -3,7 +3,9 @@
 ##Props
 ___
 ###dictionary
-**_Тип:_** _{ title: string, parent?: string } [ ]_
+**_Тип:_** _{ title: string, parent?: string } [ ] | [ ]_
+
+**_Default:_** _[ ]_
 
 **_Приклад:_**
 
@@ -19,4 +21,11 @@ ___
 	{ title: 'майонез' },
 ];
 ```
+
+___
+###placeholder
+**_Тип:_** _string_
+
+**_Default:_** _'list item'_
+
 
