@@ -3,7 +3,6 @@ import React from 'react';
 import ProductList from '@/components/product-list/product-list';
 
 export const Home = () => {
-	// const testlist = ['хліб', 'молоко', 'кава', 'чай', 'масло', 'майонез', 'ковбаса', 'цукор', 'сіль', 'гречка', 'рис'];
 	const testList = [
 		{ title: 'хліб', parent: '' },
 		{ title: 'батон', parent: 'хліб' },
@@ -24,7 +23,7 @@ export const Home = () => {
 			</div>
 			<div className="row">
 				<div className="col-12">
-					<ProductList dictionary={testList} />
+					<ProductList dictionary={testList} toDoListTitle="TODO LIST" doneListTitle="DONE LIST" />
 				</div>
 			</div>
 		</div>

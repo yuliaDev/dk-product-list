@@ -7,8 +7,12 @@ import './product-list.css';
 const ProductList = ({
 	dictionary = [],
 	placeholder = 'list item',
-	toDoListClass = 'dk-todo-list',
-	doneListClass = 'dk-done-list',
+	toDoListTitle = '',
+	doneListTitle = '',
+	toDoListClasses = 'dk-todo-list',
+	doneListClasses = 'dk-done-list',
+	listTileClass = '',
+	subparagraphIndent = 40,
 }) => {
 	const [list, setList] = useState([...dictionary]);
 	const [toDoList, setToDoList] = useState([]);
@@ -78,10 +82,13 @@ const ProductList = ({
 	const deleteFromDoneList = (item) => {
 		moveFromSourceListToTarget(item, doneList, setDoneList, list, setList);
 	};
-	// moveFromDoneToTodo, deleteFromDoneList
-	const renderList = (selectedList, moveFromList, deleteFromList) => {
+
+	const renderList = (selectedList, moveFromList, deleteFromList, listTitle, listClassNames) => {
 		return (
-			<ul className="list-group">
+			<ul className={`list-group ${listClassNames}`}>
+				{listTitle && (
+					<li className={`list-group-item d-flex justify-content-between ${listTileClass}`}>{listTitle}</li>
+				)}
 				{selectedList.map((item) => {
 					if (!item.parent) {
 						return (
@@ -94,7 +101,7 @@ const ProductList = ({
 													item={el}
 													key={el.name}
 													onHandleCheck={moveFromList}
-													subcategoryStyle={{ paddingLeft: '40px' }}
+													subcategoryStyle={{ paddingLeft: `${subparagraphIndent}px` }}
 													deleteFromList={deleteFromList}
 												/>
 											);
@@ -111,7 +118,9 @@ const ProductList = ({
 	return (
 		<div className="product-list">
 			<div className="row">
-				<div className="col-12">{toDoList && renderList(toDoList, moveToDone, deleteFromToDoList)}</div>
+				<div className="col-12">
+					{toDoList && renderList(toDoList, moveToDone, deleteFromToDoList, toDoListTitle, toDoListClasses)}
+				</div>
 			</div>
 			<div className="row">
 				<div className="col-12">
@@ -119,10 +128,9 @@ const ProductList = ({
 				</div>
 			</div>
 			<div className="row">
-				<div className="col-12">Done</div>
-			</div>
-			<div className="row">
-				<div className="col-12">{doneList && renderList(doneList, moveFromDoneToTodo, deleteFromDoneList)}</div>
+				<div className="col-12">
+					{doneList && renderList(doneList, moveFromDoneToTodo, deleteFromDoneList, doneListTitle, doneListClasses)}
+				</div>
 			</div>
 		</div>
 	);
