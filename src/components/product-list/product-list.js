@@ -31,7 +31,13 @@ const ProductList = ({
 				} else {
 					setTargetList([...targetList, selectedItem, parentItem]);
 				}
-				setSourceList(sourceList.filter((item) => item.title !== selectedItem.title));
+				if (hasChildren(sourceList, parentItem) && hasChildren(sourceList, parentItem).length > 1) {
+					setSourceList(sourceList.filter((item) => item.title !== selectedItem.title));
+				} else {
+					setSourceList(
+						sourceList.filter((item) => item.title !== selectedItem.title && item.title !== selectedItem.parent),
+					);
+				}
 			}
 		} else {
 			if (hasChildren(sourceList, selectedItem).length) {
@@ -72,80 +78,51 @@ const ProductList = ({
 	const deleteFromDoneList = (item) => {
 		moveFromSourceListToTarget(item, doneList, setDoneList, list, setList);
 	};
+	// moveFromDoneToTodo, deleteFromDoneList
+	const renderList = (selectedList, moveFromList, deleteFromList) => {
+		return (
+			<ul className="list-group">
+				{selectedList.map((item) => {
+					if (!item.parent) {
+						return (
+							<>
+								<ListItem item={item} key={item.name} onHandleCheck={moveFromList} deleteFromList={deleteFromList} />
+								{hasChildren(selectedList, item) && hasChildren(selectedList, item).length
+									? hasChildren(selectedList, item).map((el) => {
+											return (
+												<ListItem
+													item={el}
+													key={el.name}
+													onHandleCheck={moveFromList}
+													subcategoryStyle={{ paddingLeft: '40px' }}
+													deleteFromList={deleteFromList}
+												/>
+											);
+									  })
+									: null}
+							</>
+						);
+					}
+				})}
+			</ul>
+		);
+	};
 
 	return (
 		<div className="product-list">
 			<div className="row">
+				<div className="col-12">{toDoList && renderList(toDoList, moveToDone, deleteFromToDoList)}</div>
+			</div>
+			<div className="row">
 				<div className="col-12">
-					<ul className="list-group">
-						{toDoList.map((item) => {
-							if (!item.parent) {
-								return (
-									<>
-										<ListItem
-											item={item}
-											key={item.name}
-											onHandleCheck={moveToDone}
-											deleteFromList={deleteFromToDoList}
-										/>
-										{hasChildren(toDoList, item) && hasChildren(toDoList, item).length
-											? hasChildren(toDoList, item).map((el) => {
-													return (
-														<ListItem
-															item={el}
-															key={el.name}
-															onHandleCheck={moveToDone}
-															subcategoryStyle={{ paddingLeft: '40px' }}
-															deleteFromList={deleteFromToDoList}
-														/>
-													);
-											  })
-											: null}
-									</>
-								);
-							}
-						})}
-						<AddListItem list={list} addNewItem={addNewItem} placeholder={placeholder} />
-					</ul>
+					<AddListItem list={list} addNewItem={addNewItem} placeholder={placeholder} />
 				</div>
 			</div>
 			<div className="row">
 				<div className="col-12">Done</div>
 			</div>
 			<div className="row">
-				<div className="col-12">
-					{doneList && (
-						<ul className="list-group">
-							{doneList.map((item) => {
-								if (!item.parent) {
-									return (
-										<>
-											<ListItem
-												item={item}
-												key={item.name}
-												onHandleCheck={moveFromDoneToTodo}
-												deleteFromList={deleteFromDoneList}
-											/>
-											{hasChildren(doneList, item) && hasChildren(doneList, item).length
-												? hasChildren(doneList, item).map((el) => {
-														return (
-															<ListItem
-																item={el}
-																key={el.name}
-																onHandleCheck={moveFromDoneToTodo}
-																subcategoryStyle={{ paddingLeft: '40px' }}
-																deleteFromList={deleteFromDoneList}
-															/>
-														);
-												  })
-												: null}
-										</>
-									);
-								}
-							})}
-						</ul>
-					)}
-				</div>
+				<div className="col-12">{doneList && renderList(doneList, moveFromDoneToTodo, deleteFromDoneList)}</div>
 			</div>
 		</div>
 	);
