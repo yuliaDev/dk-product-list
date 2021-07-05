@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ProductList from '@/components/product-list/product-list';
+import './home.css';
 
 export const Home = () => {
 	const testList = [
@@ -23,7 +24,12 @@ export const Home = () => {
 			</div>
 			<div className="row">
 				<div className="col-12">
-					<ProductList dictionary={testList} toDoListTitle="TODO LIST" doneListTitle="DONE LIST" />
+					<ProductList
+						dictionary={testList}
+						toDoListTitle="TODO LIST"
+						doneListTitle="DONE LIST"
+						doneListClasses="my-done-style"
+					/>
 				</div>
 			</div>
 		</div>
