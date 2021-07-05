@@ -83,7 +83,7 @@ const ProductList = ({
 		moveFromSourceListToTarget(item, doneList, setDoneList, list, setList);
 	};
 
-	const renderList = (selectedList, moveFromList, deleteFromList, listTitle, listClassNames) => {
+	const renderList = (selectedList, moveFromList, deleteFromList, listTitle, listClassNames, isChecked = false) => {
 		return (
 			<ul className={`list-group ${listClassNames}`}>
 				{listTitle && (
@@ -93,7 +93,13 @@ const ProductList = ({
 					if (!item.parent) {
 						return (
 							<>
-								<ListItem item={item} key={item.name} onHandleCheck={moveFromList} deleteFromList={deleteFromList} />
+								<ListItem
+									item={item}
+									key={item.name}
+									onHandleCheck={moveFromList}
+									deleteFromList={deleteFromList}
+									isChecked={isChecked}
+								/>
 								{hasChildren(selectedList, item) && hasChildren(selectedList, item).length
 									? hasChildren(selectedList, item).map((el) => {
 											return (
@@ -103,6 +109,7 @@ const ProductList = ({
 													onHandleCheck={moveFromList}
 													subcategoryStyle={{ paddingLeft: `${subparagraphIndent}px` }}
 													deleteFromList={deleteFromList}
+													isChecked={isChecked}
 												/>
 											);
 									  })
@@ -129,7 +136,8 @@ const ProductList = ({
 			</div>
 			<div className="row">
 				<div className="col-12">
-					{doneList && renderList(doneList, moveFromDoneToTodo, deleteFromDoneList, doneListTitle, doneListClasses)}
+					{doneList &&
+						renderList(doneList, moveFromDoneToTodo, deleteFromDoneList, doneListTitle, doneListClasses, true)}
 				</div>
 			</div>
 		</div>
